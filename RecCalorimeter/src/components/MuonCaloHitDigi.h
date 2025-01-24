@@ -19,6 +19,7 @@
 #include "edm4hep/CalorimeterHitCollection.h"
 #include "edm4hep/SimTrackerHitCollection.h"
 #include <DDRec/DetectorData.h>
+#include "edm4hep/Constants.h"
 
 /** @class MuonCaloHitDigi
  *

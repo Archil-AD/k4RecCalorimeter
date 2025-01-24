@@ -101,6 +101,9 @@ StatusCode MuonCaloHitDigi::execute(const EventContext&) const {
   // Digitize the sim hits
   edm4hep::CalorimeterHitCollection* output_digi_hits = m_output_digi_hits.createAndPut();
 
+  // clear the map
+  m_cellsMap.clear();
+
   for (const auto& input_sim_hit : *input_sim_hits) {
     // retrieve the cellID
     dd4hep::DDSegmentation::CellID cellID = input_sim_hit.getCellID();
@@ -127,6 +130,7 @@ StatusCode MuonCaloHitDigi::execute(const EventContext&) const {
     else
     {
       auto theta = m_segmentation->theta(cellID);
+      if(theta > M_PI/2.) theta = M_PI - theta;
       radius = std::sin(theta)/std::cos(theta) * m_layerPositions[1][layer];
     }
 
