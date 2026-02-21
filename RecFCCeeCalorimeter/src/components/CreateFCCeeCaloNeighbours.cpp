@@ -458,7 +458,7 @@ StatusCode CreateFCCeeCaloNeighbours::initialize() {
               decoder->set(cellId, "phi", iphi);
               decoder->set(cellId, "row",
                            irow + numCells[2]); // start from the minimum existing cell index in this layer
-              unsigned int pseudoLayer = hcalPhiRowSegmentation->pseudoLayer(cellId);
+              unsigned int pseudoLayer = hcalPhiRowSegmentation->definePseudoLayer(cellId);
               decoder->set(cellId, "pseudoLayer", pseudoLayer);
               uint64_t id = cellId;
               map.insert(std::pair<uint64_t, std::vector<uint64_t>>(id, hcalPhiRowSegmentation->neighbours(id)));
@@ -478,7 +478,7 @@ StatusCode CreateFCCeeCaloNeighbours::initialize() {
               dd4hep::DDSegmentation::CellID cellId = volumeId;
               decoder->set(cellId, "phi", iphi);
               decoder->set(cellId, "row", irow + numCells[2]); // start from the minimum cell index in this layer
-              unsigned int pseudoLayer = hcalPhiRowSegmentation->pseudoLayer(cellId);
+              unsigned int pseudoLayer = hcalPhiRowSegmentation->definePseudoLayer(cellId);
               decoder->set(cellId, "pseudoLayer", pseudoLayer);
               uint64_t id = cellId;
               map.insert(std::pair<uint64_t, std::vector<uint64_t>>(id, hcalPhiRowSegmentation->neighbours(id)));
@@ -926,12 +926,6 @@ StatusCode CreateFCCeeCaloNeighbours::initialize() {
         (*decoderHCalEndcap)[m_fieldNamesSegmented[hcalEndcapId]].set(endcapCellID,
                                                                       m_fieldValuesSegmented[hcalEndcapId]);
         (*decoderHCalEndcap)["phi"].set(endcapCellID, iphi);
-        // set the pseudo-layer bit field if the phi-row segmentation is used for the Endcap
-        if(hcalEndcapPhiRowSegmentation)
-        {
-          unsigned int pseudoLayer = hcalEndcapPhiRowSegmentation->pseudoLayer(endcapCellID);
-          decoderHCalEndcap->set(endcapCellID, "pseudoLayer", pseudoLayer);
-        }
 
         // loop over the part1 layers
         for (int part1LayerId = minLayerIdEndcap[0]; part1LayerId <= maxLayerIdEndcap[0]; part1LayerId++) {
@@ -952,6 +946,9 @@ StatusCode CreateFCCeeCaloNeighbours::initialize() {
               else // phi-row segmentation
               {
                 decoderHCalEndcap->set(endcapCellID, "row", idx);
+                // set the pseudo-layer bit field if the phi-row segmentation is used for the Endcap
+                unsigned int pseudoLayer = hcalEndcapPhiRowSegmentation->definePseudoLayer(endcapCellID);
+                decoderHCalEndcap->set(endcapCellID, "pseudoLayer", pseudoLayer);
               }
 
               // get thetaMin and thetaMax of the endcap cell
@@ -1019,6 +1016,9 @@ StatusCode CreateFCCeeCaloNeighbours::initialize() {
             {
               decoderHCalEndcap->set(endcapCellID, "row",
                 endcapCellIndexes[0]);
+              // set the pseudo-layer bit field if the phi-row segmentation is used for the Endcap
+              unsigned int pseudoLayer = hcalEndcapPhiRowSegmentation->definePseudoLayer(endcapCellID);
+              decoderHCalEndcap->set(endcapCellID, "pseudoLayer", pseudoLayer);
             }
 
             // get thetaMin and thetaMax of the endcap cell
@@ -1060,6 +1060,9 @@ StatusCode CreateFCCeeCaloNeighbours::initialize() {
             {
               decoderHCalEndcap->set(endcapCellID, "row",
                 endcapCellIndexes[endcapCellIndexes.size() / 2]);
+              // set the pseudo-layer bit field if the phi-row segmentation is used for the Endcap
+              unsigned int pseudoLayer = hcalEndcapPhiRowSegmentation->definePseudoLayer(endcapCellID);
+              decoderHCalEndcap->set(endcapCellID, "pseudoLayer", pseudoLayer);
             }
 
             // get thetaMin and thetaMax of the endcap cell
@@ -1113,6 +1116,9 @@ StatusCode CreateFCCeeCaloNeighbours::initialize() {
           {
             decoderHCalEndcap->set(endcapCellID, "row",
               endcapCellIndexes[0]);
+            // set the pseudo-layer bit field if the phi-row segmentation is used for the Endcap
+            unsigned int pseudoLayer = hcalEndcapPhiRowSegmentation->definePseudoLayer(endcapCellID);
+            decoderHCalEndcap->set(endcapCellID, "pseudoLayer", pseudoLayer);
           }
 
           // we do not want to add the part2 layer cells that have part1 cells in the neighbours list
@@ -1168,6 +1174,9 @@ StatusCode CreateFCCeeCaloNeighbours::initialize() {
           {
             decoderHCalEndcap->set(endcapCellID, "row",
               endcapCellIndexes[endcapCellIndexes.size() / 2]);
+              // set the pseudo-layer bit field if the phi-row segmentation is used for the Endcap
+              unsigned int pseudoLayer = hcalEndcapPhiRowSegmentation->definePseudoLayer(endcapCellID);
+              decoderHCalEndcap->set(endcapCellID, "pseudoLayer", pseudoLayer);
           }
 
           // get thetaMin and thetaMax of the endcap cell
